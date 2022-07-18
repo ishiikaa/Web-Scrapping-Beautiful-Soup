@@ -1,0 +1,64 @@
+# If you want to scrap the website:
+#1 - Use the API
+#2 - HTML Web Scraping using some tool like bs4
+
+#STEP 0 : Install all the requirements
+
+'''pip install requests
+pip install html5lib
+pip install bs4'''
+
+import requests
+from bs4 import BeautifulSoup
+url = "https://www.goodreads.com/"
+# STEP 1: GET THE HTML 
+r = requests.get(url)
+htmlContent = r.content
+#print(htmlContent)
+
+#STEP 2: PARSE HTML 
+soup = BeautifulSoup(htmlContent, 'html.parser')
+#print(soup.prettify)
+
+#STEP 3: HTML TREE TRAVERSAL
+#commonly used types of objects
+"""print(type(title)) #1. Tag
+print(type(title.string)) #2. Navigable string - can use special functions
+print(type(soup)) #3. Beautifulsoup """
+#4. Comment
+"""markup = '<p><!--this is a comment--></p>'
+soup2 = BeautifulSoup(markup)
+print(type(soup2.p.string))"""
+"""exit()"""
+"""get the title of the HTML page"""
+title = soup.title
+
+"""Get all the paragraphs from the page"""
+paras = soup.find_all('p')
+"""print(paras)"""
+
+
+"""Get first element from the page"""
+print(soup.find('p'))
+
+"""Get classes of any element from the page"""
+print(soup.find('p')['class'])
+
+""""Find all the elements with class u-defaultType"""
+print(soup.find_all('p', class_="u-defaultType"))
+
+"""get the text from the tags/soup"""
+print(soup.find('p').get_text()) 
+
+
+"""Get all the anchor tags from the page"""
+anchors = soup.find_all('a')
+"""print(anchors)"""
+
+"""Get all the links on the page"""
+all_links = set()
+for link in anchors:
+    if(link.get('href') != '#'):
+        linkText = "https://www.goodreads.com/" + link.get('href')
+        all_links.add(link)
+        print(linkText)
